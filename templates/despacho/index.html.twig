@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Despacho index{% endblock %}
+
+{% block body %}
+    <h1>Despacho index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NombreCompleto</th>
+                <th>Rut</th>
+                <th>Direccion</th>
+                <th>Comuna</th>
+                <th>Telefono</th>
+                <th>Email</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for despacho in despachos %}
+            <tr>
+                <td>{{ despacho.id }}</td>
+                <td>{{ despacho.nombreCompleto }}</td>
+                <td>{{ despacho.rut }}</td>
+                <td>{{ despacho.direccion }}</td>
+                <td>{{ despacho.comuna }}</td>
+                <td>{{ despacho.telefono }}</td>
+                <td>{{ despacho.email }}</td>
+                <td>
+                    <a href="{{ path('despacho_show', {'id': despacho.id}) }}">show</a>
+                    <a href="{{ path('despacho_edit', {'id': despacho.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('despacho_new') }}">Create new</a>
+{% endblock %}
