@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DespachoRepository")
@@ -17,34 +18,50 @@ class Despacho
     private $id;
 
     /**
+     * @Assert\NotBlank
+     * @Assert\Length(min=5)
      * @ORM\Column(type="string", length=255)
      */
     private $nombreCompleto;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private $rut;
+    
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private $direccion;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private $comuna;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=10)
      */
     private $telefono;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private $email;
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\GreaterThanOrEqual(1000000)
+     * @ORM\Column(type="integer")
+     */
+    private $rut;
+
+    /**
+     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=1)
+     */
+    private $dv;
 
     public function getId(): ?int
     {
@@ -61,19 +78,7 @@ class Despacho
         $this->nombreCompleto = $nombreCompleto;
 
         return $this;
-    }
-
-    public function getRut(): ?string
-    {
-        return $this->rut;
-    }
-
-    public function setRut(string $rut): self
-    {
-        $this->rut = $rut;
-
-        return $this;
-    }
+    }    
 
     public function getDireccion(): ?string
     {
@@ -119,6 +124,30 @@ class Despacho
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getRut(): ?int
+    {
+        return $this->rut;
+    }
+
+    public function setRut(int $rut): self
+    {
+        $this->rut = $rut;
+
+        return $this;
+    }
+
+    public function getDv(): ?string
+    {
+        return $this->dv;
+    }
+
+    public function setDv(string $dv): self
+    {
+        $this->dv = $dv;
 
         return $this;
     }

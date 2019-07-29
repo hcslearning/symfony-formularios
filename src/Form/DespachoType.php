@@ -28,7 +28,8 @@ class DespachoType extends AbstractType {
                 ])
                 ->add('dv', TextType::class, [
                     'label' => 'Dígito Verificador',
-                    'mapped' => false,
+                    'mapped' => true,
+                    'required'  => true
                 ])
                 ->add('tipo', ChoiceType::class, [
                     'mapped' => false,
