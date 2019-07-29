@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello{% endblock %}
+
+{% block body %}
+    {{ dump(form) }}
+
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+
+                <h2 class="card-title mb-5">
+                    {% if app.request.query.get('paso') == '2' %}
+                        Información de Despacho
+                    {% elseif app.request.query.get('paso') == '1' %}
+                        Información Personal
+                    {% else %}
+                        Datos Requeridos para su Compra
+                    {% endif %}
+                </h2>
+
+                <div class="card-text">
+                    {{ form_start(form) }}
+
+                    {{ form_row(form) }}
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
