@@ -18,11 +18,9 @@ class DespachoType extends AbstractType {
         // 1 = paso uno, muestra información personal
         // 2 = muestra campos para despacho
         $paso = intval($options['paso']);
-        $tipos = ['CASA', 'DEPTO', 'OFICINA'];
-        $tipos = array_combine($tipos, $tipos);
 
         $builder
-                ->add('nombreCompleto')
+                ->add('nombreCompleto')                
                 ->add('rut', null, [
                     'required' => true,
                     'help' => 'Sin puntos ni dígito verificador (Ej. 76809666)',
