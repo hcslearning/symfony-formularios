@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use \Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 
 class DespachoType extends AbstractType {
 
@@ -29,11 +30,15 @@ class DespachoType extends AbstractType {
                 ->add('dv', TextType::class, [
                     'label' => 'Dígito Verificador',
                     'mapped' => true,
-                    'required'  => true
+                    'required' => true
                 ])
                 ->add('tipo', ChoiceType::class, [
-                    'mapped' => false,
-                    'choices' => $tipos,
+                    'choice_loader' => new CallbackChoiceLoader(function() {
+                                return Despacho::TIPOS;
+                            }),
+                    'choice_label' => function($choice, $key, $value) {
+                        return $value;
+                    },
                 ])
                 ->add('direccion', null, [
                     'help' => '(Ej. Av. Vespucio Norte 322)'
@@ -58,9 +63,9 @@ class DespachoType extends AbstractType {
                 // información de despacho
                 $fs = ['comuna', 'direccion', 'tipo'];
                 foreach ($builder->all() as $k => $v) {
-                    if( !in_array($k, $fs) ) {
+                    if (!in_array($k, $fs)) {
                         $builder->remove($k);
-                    }                    
+                    }
                 }
                 break;
             default :

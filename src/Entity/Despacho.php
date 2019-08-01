@@ -63,6 +63,13 @@ class Despacho
      */
     private $dv;
 
+    const TIPOS = ['casa', 'depto', 'oficina'];
+    /**
+     * @Assert\Choice(choices=Despacho::TIPOS, message="Escoja un tipo válido")
+     * @ORM\Column(type="string", length=10)
+     */
+    private $tipo;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -148,6 +155,18 @@ class Despacho
     public function setDv(string $dv): self
     {
         $this->dv = $dv;
+
+        return $this;
+    }
+
+    public function getTipo(): ?string
+    {
+        return $this->tipo;
+    }
+
+    public function setTipo(string $tipo): self
+    {
+        $this->tipo = $tipo;
 
         return $this;
     }
