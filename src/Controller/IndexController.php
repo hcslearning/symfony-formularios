@@ -29,11 +29,7 @@ class IndexController extends AbstractController {
         $form = $this->createForm(ClienteType::class, $cliente, []);
         
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $rut = $form->get('rut')->getData();
-            $cliente->setRut($rut->getRut());
-            $cliente->setDv($rut->getDv());
-            
+        if ($form->isSubmitted() && $form->isValid()) {           
             $em = $this->getDoctrine()->getManager();
             $em->persist($cliente);
             $em->flush();

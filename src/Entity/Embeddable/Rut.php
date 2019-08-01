@@ -1,10 +1,21 @@
 <?php
 
-namespace App\Util;
+namespace App\Entity\Embeddable;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Embeddable
+ */
 class Rut {
 
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $rut;
+    /**
+     * @ORM\Column(type="string", length=1, options={"fixed" = true})
+     */
     private $dv;
 
     static function parse(string $rutString): Rut {
@@ -75,6 +86,10 @@ class Rut {
     function setDv($dv): self {
         $this->dv = strtolower($dv);
         return $this;
+    }
+
+    public function __toString() {
+        return $this->getRut().'-'.$this->getDv();
     }
 
 }

@@ -4,7 +4,7 @@ namespace App\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use App\Util\Rut;
+use App\Entity\Embeddable\Rut;
 
 class RutToTextTransformer implements DataTransformerInterface {
     

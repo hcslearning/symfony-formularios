@@ -2,12 +2,14 @@
 
 namespace App\Form;
 
-use App\Entity\Cliente;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\AbstractType;
+use App\Form\RutType;
+use \Symfony\Component\Form\DataMapperInterface;
 use App\Form\DataTransformer\RutToTextTransformer;
+use App\Entity\Cliente;
+use App\Entity\Embeddable\Rut;
 
 class ClienteType extends AbstractType {
 
@@ -21,21 +23,17 @@ class ClienteType extends AbstractType {
         $builder
                 ->add('nombre')
                 ->add('apellido')
-                ->add('rut', TextType::class, [
-                    'mapped' => false,
-                    'help'  => 'Ej. 13999222-k'
+                ->add('rut', RutType::class, [
+                    'mapped' => true,
+                    'label' => false
                 ])
-        ;
-
-        $builder
-                ->get('rut')
-                ->addModelTransformer($this->rutToTextTransformer)
-        ;
+        ;        
+        
     }
 
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
-            'data_class' => Cliente::class,
+            'data_class'    => Cliente::class,
         ]);
     }
 
