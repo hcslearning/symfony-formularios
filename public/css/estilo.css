@@ -2,3 +2,7 @@ label.required:after {
     content: " (*) ";
     color: red;
 }
+
+#proveedor_sucursales fieldset legend {
+    border-top: 2px solid black;
+}

@@ -7,8 +7,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\DespachoType;
 use App\Form\ClienteType;
+use App\Form\ProveedorType;
+use App\Form\SucursalType;
 use \App\Entity\Despacho;
 use App\Entity\Cliente;
+use App\Entity\Proveedor;
+use App\Entity\Sucursal;
 
 class IndexController extends AbstractController {
 
@@ -54,6 +58,57 @@ class IndexController extends AbstractController {
         }
 
         return $this->render('index/despacho.html.twig', [
+                    'form' => $form->createView()
+        ]);
+    }
+    
+    /**
+     * @Route("/proveedor", name="index_proveedor")
+     */
+    public function proveedor(Request $request) {
+        $proveedor = new Proveedor();
+        $proveedor
+                ->addSucursale( new Sucursal() )
+                ;
+        $form = $this->createForm(ProveedorType::class, $proveedor, []);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($proveedor);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Se creo correctamente el proveedor');
+            //return $this->redirectToRoute('categoria_index');
+        }
+
+        return $this->render('index/index.html.twig', [
+                    'form' => $form->createView()
+        ]);
+    }
+    
+    /**
+     * @Route("/proveedor/{id}", name="index_proveedor_edit")
+     */
+    public function proveedorEdit(Request $request, Proveedor $proveedor) {
+        $add = $request->query->get('add', false);
+        if($add) {
+            $proveedor->addSucursale(new Sucursal());
+        }
+        $form = $this->createForm(ProveedorType::class, $proveedor, []);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Se modificó correctamente el proveedor');
+            //return $this->redirectToRoute('categoria_index');
+        }
+
+        return $this->render('index/index.html.twig', [
                     'form' => $form->createView()
         ]);
     }
