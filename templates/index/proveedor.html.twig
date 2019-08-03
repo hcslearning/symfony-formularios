@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello{% endblock %}
+
+{% block body %}
+    {{ dump() }}
+
+    <div class="container">
+        {% include '_menu.html.twig' %}
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="my-5">
+            {% if form is defined %}
+                {{ form_start(form) }}
+
+                {{ form_widget(form) }}
+
+                <button type="submit" class="btn btn-primary">
+                    Enviar
+                </button>
+                <a class="btn btn-success" href="{{ path('index_proveedor_edit', {id: proveedor.id, add: 1}) }}">
+                    Agregar Sucursal
+                </a>
+
+                {{ form_end(form) }}
+            {% endif %}
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script>
+        $(function(){
+            $("#proveedor_sucursales fieldset input[type=hidden]").each(function(index, value){
+                var sucursalId = $(this).val();
+                console.log( sucursalId );
+                var botton = '<a href="/sucursal/'+sucursalId+'/remove">Quitar</a>';
+                $(this).before(botton);
+            });
+        });
+    </script>
+{% endblock %}

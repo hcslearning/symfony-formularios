@@ -31,16 +31,16 @@ class IndexController extends AbstractController {
     public function cliente(Request $request) {
         $cliente = new Cliente();
         $form = $this->createForm(ClienteType::class, $cliente, []);
-        
+
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {           
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($cliente);
             $em->flush();
         }
 
         return $this->render('index/index.html.twig', [
-            'form'  => $form->createView()
+                    'form' => $form->createView()
         ]);
     }
 
@@ -61,15 +61,15 @@ class IndexController extends AbstractController {
                     'form' => $form->createView()
         ]);
     }
-    
+
     /**
      * @Route("/proveedor", name="index_proveedor")
      */
     public function proveedor(Request $request) {
         $proveedor = new Proveedor();
         $proveedor
-                ->addSucursale( new Sucursal() )
-                ;
+                ->addSucursale(new Sucursal())
+        ;
         $form = $this->createForm(ProveedorType::class, $proveedor, []);
 
         $form->handleRequest($request);
@@ -83,17 +83,18 @@ class IndexController extends AbstractController {
             //return $this->redirectToRoute('categoria_index');
         }
 
-        return $this->render('index/index.html.twig', [
-                    'form' => $form->createView()
+        return $this->render('index/proveedor.html.twig', [
+                    'form' => $form->createView(),
+                    'proveedor' => $proveedor,
         ]);
     }
-    
+
     /**
      * @Route("/proveedor/{id}", name="index_proveedor_edit")
      */
     public function proveedorEdit(Request $request, Proveedor $proveedor) {
         $add = $request->query->get('add', false);
-        if($add) {
+        if ($add) {
             $proveedor->addSucursale(new Sucursal());
         }
         $form = $this->createForm(ProveedorType::class, $proveedor, []);
@@ -108,9 +109,27 @@ class IndexController extends AbstractController {
             //return $this->redirectToRoute('categoria_index');
         }
 
-        return $this->render('index/index.html.twig', [
-                    'form' => $form->createView()
+        return $this->render('index/proveedor.html.twig', [
+                    'form' => $form->createView(),
+                    'proveedor' => $proveedor,
         ]);
+    }
+
+    /**
+     * @Route("/sucursal/{id}/remove", name="index_sucursal_remove")
+     */
+    public function sucursalRemove(Request $request, Sucursal $sucursal) {
+        $id = $sucursal->getId();
+        $proveedor = $sucursal->getProveedor();
+        $proveedorId = $proveedor->getId();
+        $proveedor->removeSucursale($sucursal);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($sucursal);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Se quitó correctamente la sucursal ' . $id);
+        return $this->redirectToRoute('index_proveedor_edit', ['id' => $proveedorId]);
     }
 
     /**

@@ -16,7 +16,9 @@ class ProveedorType extends AbstractType {
                 ->add('razonSocial')
                 ->add('alias')
                 ->add('sucursales', CollectionType::class, [
-                    'entry_type'    => SucursalType::class
+                    'entry_type'    => SucursalType::class,
+                    'allow_delete'  => true,
+                    'delete_empty'  => true,
                 ])
         ;
     }
